@@ -1,0 +1,17 @@
+<!-- control.html -->
+<!DOCTYPE html><meta charset="utf-8">
+<body>
+  <textarea id="txt" placeholder="セリフ入力"></textarea>
+  <button onclick="send()">送信</button>
+
+  <script>
+    const ws = new WebSocket("ws://localhost:8089");
+    ws.onopen = () => console.log('Connected');
+    ws.onclose = () => console.log('Disconnected');
+    function send(){
+      const t = document.getElementById("txt").value;
+      ws.send(JSON.stringify({ text: t }));
+      document.getElementById("txt").value = '';
+    }
+  </script>
+</body>

@@ -1,0 +1,22 @@
+<!-- overlay.html -->
+<!DOCTYPE html><meta charset="utf-8">
+<body style="margin:0; padding:0; background:transparent;">
+  <div id="display" style="font-size:2em; color:white; text-shadow:2px 2px 4px black;"></div>
+  <script>
+    const ws = new WebSocket("ws://localhost:8089");
+    ws.onmessage = ev => {
+      const { text } = JSON.parse(ev.data);
+      if (!text) return;
+      // 映像表示
+      const d = document.getElementById("display");
+      d.textContent = text;
+
+      // ゆっくり風読み上げ
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "ja-JP";
+      u.rate = 0.9;  // 少しゆっくりめ
+      speechSynthesis.cancel();  // 読みかけがある場合キャンセル
+      speechSynthesis.speak(u);
+    };
+  </script>
+</body>
